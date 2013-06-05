@@ -38,13 +38,13 @@ def get_httplib2_client(username, password, auth_url=None, auth_token=None, **kw
     return client
 
 
-def get_requests_client(username, password, auth_url=None, auth_token=None, **kwargs):
+def get_requests_client(username, password, auth_url=None, auth_token=None, config=None, **kwargs):
     """ Returns an Object Storage client (using Requests) """
     from object_storage.client import Client
     from object_storage.transport.requestsconn import AuthenticatedConnection, Authentication
 
     auth = Authentication(username, password, auth_url=auth_url, auth_token=auth_token, **kwargs)
-    conn = AuthenticatedConnection(auth)
+    conn = AuthenticatedConnection(auth, config=config)
     client = Client(username, password, connection=conn)
     return client
 

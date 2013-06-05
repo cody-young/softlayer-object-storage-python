@@ -17,13 +17,13 @@ class AuthenticatedConnection(BaseAuthenticatedConnection):
         Connection that will authenticate if it isn't already
         and retry once if an auth error is returned.
     """
-    def __init__(self, auth, **kwargs):
+    def __init__(self, auth, config=None, **kwargs):
         self.token = None
         self.storage_url = None
         self.auth = auth
         self.auth.authenticate()
         self._authenticate()
-        self.session = requests.Session()
+        self.session = requests.Session(config=config)
 
     def make_request(self, method, url=None, *args, **kwargs):
         """ Makes a request """

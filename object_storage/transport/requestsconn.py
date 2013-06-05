@@ -4,6 +4,7 @@
     See COPYING for license information
 """
 import requests
+from requests.adapters import HTTPAdapter
 from object_storage.transport import BaseAuthentication, BaseAuthenticatedConnection
 from object_storage import errors
 from object_storage.utils import json
@@ -23,7 +24,8 @@ class AuthenticatedConnection(BaseAuthenticatedConnection):
         self.auth = auth
         self.auth.authenticate()
         self._authenticate()
-        self.session = requests.Session(config=config)
+        self.session = requests.Session()
+        self.session.mount('http://', HTTPAdapter(pool_maxsize=getattr(config, 'pool_maxsize', 10)))
 
     def make_request(self, method, url=None, *args, **kwargs):
         """ Makes a request """

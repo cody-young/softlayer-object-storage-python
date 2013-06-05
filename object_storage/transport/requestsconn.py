@@ -25,6 +25,7 @@ class AuthenticatedConnection(BaseAuthenticatedConnection):
         self.auth.authenticate()
         self._authenticate()
         self.session = requests.Session()
+        self.session.stream = False
         self.session.mount('http://', HTTPAdapter(pool_maxsize=getattr(config, 'pool_maxsize', 10)))
 
     def make_request(self, method, url=None, *args, **kwargs):
@@ -68,8 +69,7 @@ class AuthenticatedConnection(BaseAuthenticatedConnection):
             # Authenticate and try again with a (hopefully) new token
             self._authenticate()
             res.request.headers.update(self.auth_headers)
-            res.request.send(anyway=True)
-            res = res.request.response
+            res = self.session.send(res.request)
         return res
 
 

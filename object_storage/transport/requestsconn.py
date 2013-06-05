@@ -46,7 +46,7 @@ class AuthenticatedConnection(BaseAuthenticatedConnection):
             res = self._check_success(res)
             if res.status_code == 404:
                 raise errors.NotFound('Not found')
-            if res.error:
+            if hasattr(res, 'error'):
                 try:
                     raise res.raise_for_status()
                 except Exception, ex:

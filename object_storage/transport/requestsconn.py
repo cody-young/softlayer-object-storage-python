@@ -23,6 +23,7 @@ class AuthenticatedConnection(BaseAuthenticatedConnection):
         self.auth = auth
         self.auth.authenticate()
         self._authenticate()
+        self.session = requests.Session()
 
     def make_request(self, method, url=None, *args, **kwargs):
         """ Makes a request """
@@ -40,7 +41,7 @@ class AuthenticatedConnection(BaseAuthenticatedConnection):
             formatter = kwargs.get('formatter')
             del kwargs['formatter']
 
-        res = requests.request(method, url, *args, **kwargs)
+        res = self.session.request(method, url, *args, **kwargs)
         if kwargs.get('return_response', True):
             res = self._check_success(res)
             if res.status_code == 404:

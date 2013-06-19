@@ -3,7 +3,7 @@
 
     See COPYING for license information
 """
-__version__ = "0.4.7"
+__version__ = "0.4.7p1"
 
 USER_AGENT = "sl-object-storage-python: %s" % __version__
 ENDPOINTS = {

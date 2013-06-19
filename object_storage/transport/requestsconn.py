@@ -65,8 +65,8 @@ class AuthenticatedConnection(BaseAuthenticatedConnection):
             authenticate again and retry the request.
         """
         if res.status_code == 401:
-
             # Authenticate and try again with a (hopefully) new token
+            self.auth.authenticate()
             self._authenticate()
             res.request.headers.update(self.auth_headers)
             res = self.session.send(res.request)
